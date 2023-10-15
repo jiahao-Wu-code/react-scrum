@@ -16,13 +16,13 @@ export default function Layout() {
             <div className="layout-wrap-project">
                 {
                     isProject ? null : (
-                        <div className="project_side_menu_wrap">
+                        <div className="project-side-menu-wrap">
                             <LeftMenu />
                         </div>
                     )
                 }
                 {/* 内容区 */}
-                <div className="project_wrap">
+                <div className="project-wrap">
                     {/* 子组件 占位 */}
                     <Outlet></Outlet>
                 </div>
