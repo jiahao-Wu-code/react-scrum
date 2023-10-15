@@ -200,7 +200,7 @@ li {
     /* display: flex; */
 }
 .header-logo {
-    width: 40px;
+    width: 160px;
     border-radius: 50%;
     margin-right: 20px;
 }
@@ -255,7 +255,7 @@ li {
 
 
 .project-create {
-    width: 300px;
+    width: 180px;
     font-size: 16px;
 }
 
