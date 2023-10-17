@@ -1,6 +1,7 @@
 import { Button, Input, Select } from 'antd'
 import React from 'react'
 import ProjectTable from '../component/ProjectTable'
+import CreateProjectModal from '../component/CreateProjectModal'
 
 export default function Project() {
     const options = [
@@ -27,6 +28,7 @@ export default function Project() {
             <div className='project-table-wrap'>
                 <ProjectTable />
             </div>
+            <CreateProjectModal />
         </div>
     )
 }
