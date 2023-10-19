@@ -528,3 +528,7 @@ h5,
 h6 {
     font-weight: normal;
 }
+
+.kanban-dropp-wrap {
+    display: flex;
+}
