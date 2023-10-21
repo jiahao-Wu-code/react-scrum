@@ -3,36 +3,11 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import '../../css/drop.css';
 import TaskDrop from './TaskDrop';
 import { Button } from 'antd';
+import { useSelector } from 'react-redux';
+import { kanbanSelector } from '../../redux/slice/drop'
 
 export default function DropContainer() {
-    const initialData = [
-        {
-            id: 'column1',
-            title: 'Column 1',
-            tasks: [
-                { id: 'task1', content: 'Task 1', type: 'task', owner: 'Tim' },
-                { id: 'task2', content: 'Task 2', type: 'bug', owner: 'Jim' },
-                { id: 'task3', content: 'Task 3', type: 'task', owner: 'Tony' },
-            ],
-        },
-        {
-            id: 'column2',
-            title: 'Column 2',
-            tasks: [
-                { id: 'task4', content: 'Task 4', type: 'bug', owner: 'Jay' },
-                { id: 'task5', content: 'Task 5', type: 'success', owner: 'Jack' },
-            ],
-        },
-        {
-            id: 'column3',
-            title: 'Column 3',
-            tasks: [
-                { id: 'task6', content: 'Task 6', type: 'task', owner: 'Jay' },
-                { id: 'task7', content: 'Task 7', type: 'bug', owner: 'Jack' },
-            ],
-        },
-    ];
-
+    const initialData = useSelector(kanbanSelector)
     const onDragEnd = (e) => {
         console.log("onDragEnd", e);
     }
