@@ -1,42 +1,44 @@
 import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
-import classnames from 'classnames'
+import { Tag } from 'antd';
 
 export default function TaskDrop(props) {
-    const task = props.task;
-    const list = task.task;
+    const column = props.task;
     return (
-        <Droppable droppableId={task.kanbanKey} type='task'>
-            {(provided, snapshot) => (
-                <div className='task-dropp-wrap' ref={provided.innerRef} {...provided.droppableProps}>
-                    {list?.map((item, index) => {
-                        return (
-                            <Draggable index={index} key={`${item.name}`}
-                                draggableId={`${item.name}`}>
-                                {(provided, snapshot) => {
-                                    return (
-                                        <div className='task-card' key={index} ref={provided.innerRef}>
-                                            <div className='task-card-top'>
-                                                <div className='task-head-picture' alt='' ></div>
-                                                <p className='task-head-p'>{item.name}</p>
-                                            </div>
-                                            <div className='task-card-bottom'>
-                                                <div className='task-owner'>{item.owner}</div>
-                                                <div className={classnames({
-                                                    new_task_type: true,
-                                                    red: item.type === 'bug',
-                                                    blue: item.type === 'task'
-                                                })}>
-                                                    <span className='task_type-span'>{item.type}</span>
-                                                </div>
-                                            </div>
-
+        <Droppable droppableId={column.id} type="task">
+            {(provided) => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className='task-drop-wrap'
+                >
+                    {column.tasks.map((task, taskIndex) => (
+                        <Draggable draggableId={task.id} index={taskIndex} key={task.id}>
+                            {(provided, snapshot) => (
+                                <div
+                                    className='task-drag-wrap'
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                >
+                                    <div className='task-card'>
+                                        <div className='task-card-top'>
+                                            <div className='task-head-picture' alt='' ></div>
+                                            <p className='task-head-p'>{task.content}</p>
                                         </div>
-                                    )
-                                }}
-                            </Draggable>
-                        )
-                    })}
+                                        <div className='task-card-bottom'>
+                                            <div className='task-owner'>{task.owner}</div>
+                                            <div>
+                                                <Tag color={task.type === 'task' ? 'processing' : task.type === 'bug' ? 'error' : 'success'}>{task.type}</Tag>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            )}
+                        </Draggable>
+                    ))}
+                    {provided.placeholder}
                 </div>
             )}
         </Droppable>

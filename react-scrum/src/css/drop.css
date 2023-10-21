@@ -11,8 +11,7 @@
 .kanban-drop-wrap {
     display: flex;
     flex-direction: row;
-    width: 200px;
-    background: #ccc;
+    min-width: 200px;
 }
 
 
@@ -140,17 +139,17 @@
     /* margin-top: 10px; */
 }
 
-.new-task-type {
+.new_task_type {
     display: flex;
     margin: 8px 0 0 50px;
     height: 28px;
 }
 
-.new-task-type.blue {
+.new_task_type.blue {
     color: blue;
 }
 
-.new-task-type.red {
+.new_task_type.red {
     color: red;
 }
 

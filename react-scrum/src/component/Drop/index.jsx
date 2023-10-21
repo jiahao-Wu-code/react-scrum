@@ -2,77 +2,72 @@ import React from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import '../../css/drop.css';
 import TaskDrop from './TaskDrop';
+import { Button } from 'antd';
 
 export default function DropContainer() {
-    const dargData = [
+    const initialData = [
         {
-            kanbanKey: '需求评审',
-            task: [
-                {
-                    name: '测试1',
-                    type: 'test',
-                    owner: 'Jim',
-                    taskId: '1',
-                },
-                {
-                    name: '后端1',
-                    type: '研发',
-                    owner: 'Tom',
-                    taskId: '2',
-                },
-                {
-                    name: '前端1',
-                    type: '研发',
-                    owner: 'Yi-co',
-                    taskId: '3',
-                },
-            ]
+            id: 'column1',
+            title: 'Column 1',
+            tasks: [
+                { id: 'task1', content: 'Task 1', type: 'task', owner: 'Tim' },
+                { id: 'task2', content: 'Task 2', type: 'bug', owner: 'Jim' },
+                { id: 'task3', content: 'Task 3', type: 'task', owner: 'Tony' },
+            ],
         },
         {
-            kanbanKey: '研发',
-            task: [
-                {
-                    name: '测试2',
-                    type: 'test',
-                    owner: 'Jim',
-                    taskId: '4',
-                },
-                {
-                    name: '后端2',
-                    type: '研发',
-                    owner: 'Tom',
-                    taskId: '5',
-                },
-                {
-                    name: '前端2',
-                    type: '研发',
-                    owner: 'Yi-co',
-                    taskId: '6',
-                },
-            ]
-        }
-    ]
+            id: 'column2',
+            title: 'Column 2',
+            tasks: [
+                { id: 'task4', content: 'Task 4', type: 'bug', owner: 'Jay' },
+                { id: 'task5', content: 'Task 5', type: 'success', owner: 'Jack' },
+            ],
+        },
+        {
+            id: 'column3',
+            title: 'Column 3',
+            tasks: [
+                { id: 'task6', content: 'Task 6', type: 'task', owner: 'Jay' },
+                { id: 'task7', content: 'Task 7', type: 'bug', owner: 'Jack' },
+            ],
+        },
+    ];
+
+    const onDragEnd = (e) => {
+        console.log("onDragEnd", e);
+    }
+
     return (
-        <DragDropContext>
-            <Droppable droppableId="droppable-1" type="kanban" direction={'horizontal'}>
-                {(provided, snapshot) => (
-                    <div className='kanban-dropp-wrap' ref={provided.innerRef} {...provided.droppableProps}>
-                        {dargData && dargData.map((item, index) => {
-                            return (
-                                <Draggable key={item.kanbanKey} index={index} draggableId={item.kanbanKey}>
-                                    {(provided, snapshot) => {
-                                        return (
-                                            <div className="kanban-drag-wrap" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.dragHandleProps}>
-                                                <h1>{item.kanbanKey}</h1>
-                                                <TaskDrop task={item} />
-                                            </div>
-                                        )
-                                    }}
-                                </Draggable>
-                            )
-                        })}
+
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="outer-container" direction="horizontal" type="column">
+                {(provided) => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className='kanban-drop-wrap'
+                    >
+                        {initialData.map((column, index) => (
+                            <Draggable draggableId={column.id} index={index} key={column.id}>
+                                {(provided) => (
+                                    <div
+                                        className='kanban-drag-wrap'
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                    >
+                                        <h1>{column.title}</h1>
+                                        <TaskDrop task={column} />
+                                        <Button className='new-task-btn' type="primary" ghost>
+                                            新建task
+                                        </Button>
+                                    </div>
+                                )}
+                            </Draggable>
+                        ))}
                         {provided.placeholder}
-                    </div>)}
+                    </div>
+                )}
             </Droppable>
         </DragDropContext>
     )
