@@ -3,13 +3,42 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import '../../css/drop.css';
 import TaskDrop from './TaskDrop';
 import { Button } from 'antd';
-import { useSelector } from 'react-redux';
-import { kanbanSelector } from '../../redux/slice/drop'
+import { useDispatch, useSelector } from 'react-redux';
+import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder } from '../../redux/slice/drop'
 
 export default function DropContainer() {
     const initialData = useSelector(kanbanSelector)
+    const dispatch = useDispatch()
     const onDragEnd = (e) => {
         console.log("onDragEnd", e);
+        if (e.destination === null) {
+            return
+        }
+        if (e.type === "column") {
+            // colomn 拖拽
+            dispatch(kanbanOrder({
+                source: e.source.index,
+                destination: e.destination.index
+            }))
+        }
+        if (e.type === 'task') {
+            if (e.source.droppableId === e.destination.droppableId) {
+                // 同一个 colomn
+                dispatch(taskSameOrder({
+                    sourceColomnId: e.source.droppableId,
+                    source: e.source.index,
+                    destination: e.destination.index
+                }))
+            } else {
+                // 不同的 colomn
+                dispatch(taskDiffOrder({
+                    sourceColomnId: e.source.droppableId,
+                    destinationColomnId: e.destination.droppableId,
+                    source: e.source.index,
+                    destination: e.destination.index
+                }))
+            }
+        }
     }
 
     return (

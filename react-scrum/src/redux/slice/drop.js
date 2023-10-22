@@ -43,14 +43,46 @@ export const dropSlice = createSlice({
     name: 'dropSlice',
     initialState,
     reducers: {
-        kanbanOrder: () => { },
-        taskSameOrder: () => { },
-        taskDiffOrder: () => { },
+        // 拖拽 colomn
+        kanbanOrder: (state, actions) => {
+            // console.log("action", state, actions)
+            /**
+             * actions 包含
+             * @param payload {Object} ----> payload:{source,destination}
+             * @param type {String} ----> type
+             */
+            reorderList(
+                state.kanbanState,
+                actions.payload.source,
+                actions.payload.destination
+            )
+        },
+
+        // 拖拽 同一个colomn的task
+        taskSameOrder: (state, actions) => {
+            const colomn = state.kanbanState.find(item => item.id === actions.payload.sourceColomnId)
+            reorderList(
+                colomn.tasks,
+                actions.payload.source,
+                actions.payload.destination
+            )
+        },
+
+        // 拖拽 不同colomn的task
+        taskDiffOrder: (state, actions) => {
+            console.log("first", actions)
+            const sourceColomn = state.kanbanState.find(item => item.id === actions.payload.sourceColomnId);
+            const destinationColomn = state.kanbanState.find(item => item.id === actions.payload.destinationColomnId);
+            const [remove] = sourceColomn.tasks.splice(actions.payload.source, 1);
+            console.log("remove", remove)
+            destinationColomn.tasks.splice(actions.payload.destination, 0, remove);
+        },
+
         addKanban: () => { },
         addTask: () => { },
     }
 })
-export const { add } = dropSlice.actions
+export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask } = dropSlice.actions
 
 export const kanbanSelector = (state) => {
     return state.drop.kanbanState
