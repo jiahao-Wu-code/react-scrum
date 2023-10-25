@@ -17,7 +17,7 @@ export default function Login() {
                 <Form.Item name={'password'} rules={[{ message: '请输入密码', required: true }]}>
                     <Input.Password id='password' placeholder={'密码'} />
                 </Form.Item>
-                <Button className='login-button' type="primary"></Button>
+                <Button className='login-button' type="primary">登录</Button>
                 <Link className='login-enroll' to={'/register'}>没有账号？注册新账号</Link>
             </Form>
         </LoginWrap>
