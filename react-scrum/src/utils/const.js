@@ -1,0 +1,1 @@
+export const GLOBAL_ERROR_TIPS = 'global_error_tips';
