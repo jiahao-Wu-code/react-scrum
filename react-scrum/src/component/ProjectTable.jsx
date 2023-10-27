@@ -1,7 +1,16 @@
 import { Button, Space, Table } from 'antd';
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProjectAsync, selectProjectList } from '../redux/slice/project';
+import dayjs from 'dayjs'
+import { StarOutlined, StarTwoTone } from '@ant-design/icons';
 
 export default function ProjectTable() {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getProjectAsync());
+    }, [])
+
     const columns = [
         {
             title: '收藏',
@@ -9,7 +18,7 @@ export default function ProjectTable() {
             key: 'collect',
             render: (text, record) => {
                 return (
-                    <div className='iconfont icon-shoucang shoucang-item'></div>
+                    record.collect ? <StarTwoTone /> : <StarOutlined />
                 )
             },
             width: '10%'
@@ -36,6 +45,11 @@ export default function ProjectTable() {
             title: '创建时间',
             key: 'created',
             dataIndex: 'created',
+            render: (_, record) => (
+                <Space size="middle">
+                    <div>{dayjs(record.created).format('DD/MM/YYYY')}</div>
+                </Space>
+            ),
         },
         {
             title: '操作',
@@ -51,18 +65,10 @@ export default function ProjectTable() {
             ),
         },
     ];
-    const data = [
-        {
-            collect: false,
-            name: '商城管理系统',
-            organization: '研发部',
-            owner: 'James',
-            created: '2023-10-16',
-        }
-    ]
+    const data = useSelector(selectProjectList)
     return (
         <>
-            <Table rowKey="created" className='project_table_css' dataSource={data} columns={columns} />
+            <Table rowKey="created" className='project-table-css' dataSource={data} columns={columns} />
         </>
     )
 }
