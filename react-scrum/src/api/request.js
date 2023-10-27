@@ -1,6 +1,6 @@
 import axios from "axios";
 import EventBus from "../utils/event";
-import { GLOBAL_ERROR_TIPS } from "../utils/const";
+import { GLOBAL_ERROR_TIPS, GLOBAL_SUCCESS_TIPS } from "../utils/const";
 
 const service = axios.create();
 
@@ -18,6 +18,11 @@ service.interceptors.response.use((res) => {
         // 全局的错误处理
         if (res.data.code !== 0 && res.data.code !== 401) {
             EventBus.emit(GLOBAL_ERROR_TIPS, res.data.msg)
+        }
+
+        // 全局的成功处理
+        if (res.data.code === 0) {
+            EventBus.emit(GLOBAL_SUCCESS_TIPS, res.data.msg)
         }
     } else {
 
