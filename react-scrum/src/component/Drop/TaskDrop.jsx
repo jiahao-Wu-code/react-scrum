@@ -12,7 +12,7 @@ export default function TaskDrop(props) {
                     {...provided.droppableProps}
                     className='task-drop-wrap'
                 >
-                    {column.tasks.map((task, taskIndex) => (
+                    {column?.tasks?.map((task, taskIndex) => (
                         <Draggable draggableId={task.id} index={taskIndex} key={task.id}>
                             {(provided, snapshot) => (
                                 <div

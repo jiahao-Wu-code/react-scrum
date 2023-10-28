@@ -90,7 +90,13 @@ export const dropSlice = createSlice({
             destinationColomn.tasks.splice(actions.payload.destination, 0, remove);
         },
 
-        addKanban: () => { },
+        addKanban: (state, actions) => {
+            state.kanbanState.push({
+                kanbanKey: actions.payload,
+                id: actions.payload,
+                tasks: []
+            })
+        },
         addTask: () => { },
 
         setKanbanData: (state, actions) => {

@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import '../../css/drop.css';
 import TaskDrop from './TaskDrop';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder, updateKanbanDataAsync } from '../../redux/slice/drop'
+import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder, updateKanbanDataAsync, addKanban } from '../../redux/slice/drop'
 
 export default function DropContainer() {
+    const [inputValue, setInputValue] = useState('')
     const initialData = useSelector(kanbanSelector)
     const dispatch = useDispatch()
     const onDragEnd = (e) => {
@@ -43,38 +44,56 @@ export default function DropContainer() {
         }
     }
 
+    const handleInput = (e) => {
+        setInputValue(e.target.value)
+    }
+
+    const handlePressEnter = (e) => {
+        const value = inputValue.replaceAll(' ', '');
+        if (value.length) {
+            dispatch(addKanban(value))
+            dispatch(updateKanbanDataAsync())
+            setInputValue('')
+        }
+    }
+
     return (
 
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="outer-container" direction="horizontal" type="column">
-                {(provided) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className='kanban-drop-wrap'
-                    >
-                        {initialData.map((column, index) => (
-                            <Draggable draggableId={column.id} index={index} key={column.id}>
-                                {(provided) => (
-                                    <div
-                                        className='kanban-drag-wrap'
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <h1>{column.title}</h1>
-                                        <TaskDrop task={column} />
-                                        <Button className='new-task-btn' type="primary" ghost>
-                                            新建task
-                                        </Button>
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
+            {initialData.length !== 0 &&
+                <Droppable droppableId="outer-container" direction="horizontal" type="column">
+                    {(provided) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className='kanban-drop-wrap'
+                        >
+                            {initialData.map((column, index) => (
+                                <Draggable draggableId={column.kanbanKey} index={index} key={column.kanbanKey}>
+                                    {(provided) => (
+                                        <div
+                                            className='kanban-drag-wrap'
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                        >
+                                            <h1>{column.kanbanKey}</h1>
+                                            <TaskDrop task={column} />
+                                            <Button className='new-task-btn' type="primary" ghost>
+                                                新建task
+                                            </Button>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            }
+            <div className="kanban-drag-wrap">
+                <Input onPressEnter={handlePressEnter} placeholder='新建看板名称' value={inputValue} onInput={handleInput} />
+            </div>
         </DragDropContext>
     )
 }
