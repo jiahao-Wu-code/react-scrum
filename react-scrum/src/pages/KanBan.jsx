@@ -4,6 +4,7 @@ import DropContainer from '../component/Drop'
 import { useParams } from 'react-router-dom'
 import { getProjectByIdAsync } from '../redux/slice/project';
 import { useDispatch } from 'react-redux';
+import CreateKanbanModal from '../component/CreateKanbanModal';
 
 
 export default function KanBan() {
@@ -25,6 +26,7 @@ export default function KanBan() {
             <div className="drop-wrap">
                 <DropContainer />
             </div>
+            <CreateKanbanModal />
         </div>
     )
 }

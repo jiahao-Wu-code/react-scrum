@@ -5,6 +5,7 @@ import TaskDrop from './TaskDrop';
 import { Button, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder, updateKanbanDataAsync, addKanban } from '../../redux/slice/drop'
+import { setTaskModal } from '../../redux/slice/kanban';
 
 export default function DropContainer() {
     const [inputValue, setInputValue] = useState('')
@@ -57,6 +58,14 @@ export default function DropContainer() {
         }
     }
 
+    const handleClickAddTask = (kanbanKey) => {
+        dispatch(setTaskModal({
+            show: true,
+            kanbanKey,
+            type: 'create'
+        }))
+    }
+
     return (
 
         <DragDropContext onDragEnd={onDragEnd}>
@@ -79,7 +88,7 @@ export default function DropContainer() {
                                         >
                                             <h1>{column.kanbanKey}</h1>
                                             <TaskDrop task={column} />
-                                            <Button className='new-task-btn' type="primary" ghost>
+                                            <Button className='new-task-btn' type="primary" ghost onClick={() => handleClickAddTask(column.kanbanKey)}>
                                                 新建task
                                             </Button>
                                         </div>
