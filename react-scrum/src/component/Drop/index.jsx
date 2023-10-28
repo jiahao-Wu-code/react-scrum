@@ -4,7 +4,7 @@ import '../../css/drop.css';
 import TaskDrop from './TaskDrop';
 import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder } from '../../redux/slice/drop'
+import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder, updateKanbanDataAsync } from '../../redux/slice/drop'
 
 export default function DropContainer() {
     const initialData = useSelector(kanbanSelector)
@@ -20,6 +20,8 @@ export default function DropContainer() {
                 source: e.source.index,
                 destination: e.destination.index
             }))
+
+            dispatch(updateKanbanDataAsync())
         }
         if (e.type === 'task') {
             if (e.source.droppableId === e.destination.droppableId) {

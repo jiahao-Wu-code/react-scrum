@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getProject, getProjectById } from "../../api/project";
-import { setKanbanData } from "./drop";
+import { setKanbanData, setProjectId } from "./drop";
 import { setCurrentProject } from "./kanban";
 
 export const getProjectAsync = createAsyncThunk(
@@ -20,8 +20,8 @@ export const getProjectByIdAsync = createAsyncThunk(
         // 保存看板数据
         thunkApi.dispatch(setKanbanData(kanban))
         // 保存当前的project数据
-        console.log("23>>>",res)
         thunkApi.dispatch(setCurrentProject(res.data))
+        thunkApi.dispatch(setProjectId(res.data._id))
         return kanban
     }
 )
@@ -37,7 +37,6 @@ export const projectSlice = createSlice({
     initialState,
     reducers: {
         updateList: (state, actions) => {
-            console.log("23>>>", state, actions)
             return state.list = actions.payload
         }
     },

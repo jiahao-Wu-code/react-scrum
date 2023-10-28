@@ -21,3 +21,14 @@ export function getProjectById(projectId) {
         method: 'GET',
     })
 }
+
+/**
+ * 更新看板
+ */
+export function updateKanban(projectId,kanbanData){
+    return request({
+        url: `/api/projects/${projectId}/kanban`,
+        method: 'PUT',
+        data: kanbanData
+    })
+}

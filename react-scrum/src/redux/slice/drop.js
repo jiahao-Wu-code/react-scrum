@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { updateKanban } from "../../api/project";
 
 
 const initialState = {
@@ -28,8 +29,19 @@ const initialState = {
         //         { id: 'task7', content: 'Task 7', type: 'bug', owner: 'Jack' },
         //     ],
         // },
-    ]
+    ],
+    projectId: ''
 }
+
+export const updateKanbanDataAsync = createAsyncThunk(
+    'drop/updateKanbanDataAsync',
+    async (_, thunkApi) => {
+        const store = thunkApi.getState();
+        const projectId = store.drop.projectId
+        const kanbanData = store.drop.kanbanState
+        thunkApi.dispatch(updateKanban(projectId, kanbanData))
+    }
+)
 
 
 const reorderList = (list, startIndex, endIndex) => {
@@ -83,10 +95,14 @@ export const dropSlice = createSlice({
 
         setKanbanData: (state, actions) => {
             state.kanbanState = actions.payload
+        },
+
+        setProjectId: (state, actions) => {
+            state.projectId = actions.payload
         }
     }
 })
-export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask, setKanbanData } = dropSlice.actions
+export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask, setKanbanData, setProjectId } = dropSlice.actions
 
 export const kanbanSelector = (state) => {
     return state.drop.kanbanState
