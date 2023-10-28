@@ -3,31 +3,31 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     kanbanState: [
-        {
-            id: 'column1',
-            title: 'Column 1',
-            tasks: [
-                { id: 'task1', content: 'Task 1', type: 'task', owner: 'Tim' },
-                { id: 'task2', content: 'Task 2', type: 'bug', owner: 'Jim' },
-                { id: 'task3', content: 'Task 3', type: 'task', owner: 'Tony' },
-            ],
-        },
-        {
-            id: 'column2',
-            title: 'Column 2',
-            tasks: [
-                { id: 'task4', content: 'Task 4', type: 'bug', owner: 'Jay' },
-                { id: 'task5', content: 'Task 5', type: 'success', owner: 'Jack' },
-            ],
-        },
-        {
-            id: 'column3',
-            title: 'Column 3',
-            tasks: [
-                { id: 'task6', content: 'Task 6', type: 'task', owner: 'Jay' },
-                { id: 'task7', content: 'Task 7', type: 'bug', owner: 'Jack' },
-            ],
-        },
+        // {
+        //     id: 'column1',
+        //     title: 'Column 1',
+        //     tasks: [
+        //         { id: 'task1', content: 'Task 1', type: 'task', owner: 'Tim' },
+        //         { id: 'task2', content: 'Task 2', type: 'bug', owner: 'Jim' },
+        //         { id: 'task3', content: 'Task 3', type: 'task', owner: 'Tony' },
+        //     ],
+        // },
+        // {
+        //     id: 'column2',
+        //     title: 'Column 2',
+        //     tasks: [
+        //         { id: 'task4', content: 'Task 4', type: 'bug', owner: 'Jay' },
+        //         { id: 'task5', content: 'Task 5', type: 'success', owner: 'Jack' },
+        //     ],
+        // },
+        // {
+        //     id: 'column3',
+        //     title: 'Column 3',
+        //     tasks: [
+        //         { id: 'task6', content: 'Task 6', type: 'task', owner: 'Jay' },
+        //         { id: 'task7', content: 'Task 7', type: 'bug', owner: 'Jack' },
+        //     ],
+        // },
     ]
 }
 
@@ -80,9 +80,13 @@ export const dropSlice = createSlice({
 
         addKanban: () => { },
         addTask: () => { },
+
+        setKanbanData: (state, actions) => {
+            state.kanbanState = actions.payload
+        }
     }
 })
-export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask } = dropSlice.actions
+export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask, setKanbanData } = dropSlice.actions
 
 export const kanbanSelector = (state) => {
     return state.drop.kanbanState
