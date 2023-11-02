@@ -2,12 +2,37 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getProject, getProjectById } from "../../api/project";
 import { setKanbanData, setProjectId } from "./drop";
 import { setCurrentProject } from "./kanban";
+import { getOrgList, getTaskTypeList, getUserList } from "../../api/user";
 
 export const getProjectAsync = createAsyncThunk(
     'porject/getProjectAsync',
     async () => {
         const res = await getProject();
         return res.data.data
+    }
+)
+
+export const getUserListAsync = createAsyncThunk(
+    'project/getUserListAsync',
+    async () => {
+        const res = await getUserList();
+        return res.data
+    }
+)
+
+export const getOrgListAsync = createAsyncThunk(
+    'project/getOrgListAsync',
+    async () => {
+        const res = await getOrgList();
+        return res.data
+    }
+)
+
+export const getTaskTypeListAsync = createAsyncThunk(
+    'project/getTaskTypeListAsync',
+    async () => {
+        const res = await getTaskTypeList();
+        return res.data
     }
 )
 
@@ -30,6 +55,9 @@ export const getProjectByIdAsync = createAsyncThunk(
 const initialState = {
     list: [],
     loading: false,
+    userList: [],
+    orgList: [],
+    taskTypeList: []
 }
 
 export const projectSlice = createSlice({
@@ -47,6 +75,15 @@ export const projectSlice = createSlice({
         builder.addCase(getProjectAsync.fulfilled, (state, { payload }) => {
             state.loading = false
             state.list = payload
+        })
+        builder.addCase(getUserListAsync.fulfilled, (state, { payload }) => {
+            state.userList = payload
+        })
+        builder.addCase(getOrgListAsync.fulfilled, (state, { payload }) => {
+            state.orgList = payload
+        })
+        builder.addCase(getTaskTypeListAsync.fulfilled, (state, { payload }) => {
+            state.taskTypeList = payload
         })
     }
 })

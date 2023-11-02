@@ -6,7 +6,7 @@ const service = axios.create();
 
 service.interceptors.response.use((res) => {
     // 做相应处理...
-    console.log("first response: ", res)
+    // console.log("first response: ", res)
     if (res.status === 200) {
 
         if (res.data.code === 401) {

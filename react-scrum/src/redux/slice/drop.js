@@ -82,7 +82,7 @@ export const dropSlice = createSlice({
 
         // 拖拽 不同colomn的task
         taskDiffOrder: (state, actions) => {
-            console.log("first", actions)
+            // console.log("first", actions)
             const sourceColomn = state.kanbanState.find(item => item.id === actions.payload.sourceColomnId);
             const destinationColomn = state.kanbanState.find(item => item.id === actions.payload.destinationColomnId);
             const [remove] = sourceColomn.tasks.splice(actions.payload.source, 1);
@@ -97,7 +97,13 @@ export const dropSlice = createSlice({
                 tasks: []
             })
         },
-        addTask: () => { },
+        addTask: (state, actions) => {
+            const kanbanKey = actions.payload.kanbanKey;
+            const task = actions.payload.task;
+            const kanban = state.kanbanState.find(item => item.kanbanKey === kanbanKey)
+            kanban.tasks.push(task);
+
+        },
 
         setKanbanData: (state, actions) => {
             state.kanbanState = actions.payload

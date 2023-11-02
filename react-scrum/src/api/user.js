@@ -24,3 +24,37 @@ export function userLogin(userInfo) {
         data: userInfo
     })
 }
+
+/**
+ * 用户列表
+ * 
+ */
+export function getUserList (){
+    return request({
+        url: `/api/users`,
+        method: 'GET',
+    })
+}
+
+
+/**
+ * 部门列表
+ * 
+ */
+export function getOrgList (){
+    return request({
+        url: `/api/organization`,
+        method: 'GET',
+    })
+}
+
+/**
+ * 部门列表
+ * 
+ */
+export function getTaskTypeList (){
+    return request({
+        url: `/api/task/type_list`,
+        method: 'GET',
+    })
+}

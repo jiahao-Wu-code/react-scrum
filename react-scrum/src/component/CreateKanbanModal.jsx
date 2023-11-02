@@ -2,19 +2,50 @@ import React from 'react'
 import { Form, Input, Select, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTaskModal } from '../redux/slice/kanban';
+import { addTask, updateKanbanDataAsync } from '../redux/slice/drop';
 
 export default function CreateKanbanModal() {
     const [form] = Form.useForm();
 
     const dispatch = useDispatch()
-    const modalStatus = useSelector(state => state.kanban.taskModalStatus)
-    const show = modalStatus.show
-    const type = modalStatus.type
-    const projectId = modalStatus.id
-    console.log("first modal", modalStatus)
+    const { show, type, kanbanKey, id: projectId } = useSelector(state => state.kanban.taskModalStatus)
+
+    const userList = useSelector(state => state.project.userList)
+    const orgList = useSelector(state => state.project.orgList)
+    const taskTypeList = useSelector(state => state.project.taskTypeList)
+
+
+    function renderTaskOptions(arr) {
+        return arr.map((item) => {
+            return <Select.Option key={item.type} value={item.type}>{item.name}</Select.Option>
+        })
+    }
+
+
+    function renderUsersOptions(arr) {
+        return arr.map((item) => {
+            return <Select.Option key={item._id} value={item.username}>{item.username}</Select.Option>
+        })
+    }
 
     async function onOk() {
-
+        form.validateFields()
+            .then(res => {
+                // 创建
+                res.id = Date.now() + ''
+                if (type === 'create') {
+                    dispatch(addTask({
+                        kanbanKey,
+                        task: res
+                    }))
+                }
+                dispatch(updateKanbanDataAsync())
+                dispatch(setTaskModal({
+                    show: false
+                }))
+            }).catch(err => {
+                console.log(err)
+            })
     }
 
     function onCancel() {
@@ -26,9 +57,9 @@ export default function CreateKanbanModal() {
 
     return (
         <Modal
-            title={type === 'edit' ? '编辑项目' : '创建项目'}
+            title={type === 'edit' ? '编辑任务' : '创建任务'}
             open={show}
-            okText={type === 'edit' ? '编辑项目' : '创建项目'}
+            okText={type === 'edit' ? '编辑任务' : '创建任务'}
             onOk={onOk}
             onCancel={onCancel}
         >
@@ -53,7 +84,7 @@ export default function CreateKanbanModal() {
                     rules={[{ required: true, message: '请选择任务类型' }]}
                 >
                     <Select>
-                        {/* {render_task_options(task_types)} */}
+                        {renderTaskOptions(taskTypeList)}
                     </Select>
                 </Form.Item>
                 <Form.Item
@@ -62,7 +93,7 @@ export default function CreateKanbanModal() {
                     rules={[{ required: true, message: '请选择负责人' }]}
                 >
                     <Select>
-                        {/* {render_users_options(users)} */}
+                        {renderUsersOptions(userList)}
                     </Select>
                 </Form.Item>
                 <Form.Item

@@ -24,7 +24,7 @@ export default function TaskDrop(props) {
                                     <div className='task-card'>
                                         <div className='task-card-top'>
                                             <div className='task-head-picture' alt='' ></div>
-                                            <p className='task-head-p'>{task.content}</p>
+                                            <p className='task-head-p'>{task.name}</p>
                                         </div>
                                         <div className='task-card-bottom'>
                                             <div className='task-owner'>{task.owner}</div>

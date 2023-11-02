@@ -19,7 +19,6 @@ export const kanbanSlice = createSlice({
         },
         setTaskModal: (state, { payload }) => {
             Object.keys(payload).forEach(key => {
-                console.log("===", state, payload)
                 state.taskModalStatus[key] = payload[key]
             })
         }

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProjectAsync, selectProjectList } from '../redux/slice/project';
 import dayjs from 'dayjs'
 import { StarOutlined, StarTwoTone } from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
 
 export default function ProjectTable() {
     const dispatch = useDispatch()
@@ -28,6 +29,11 @@ export default function ProjectTable() {
             dataIndex: 'name',
             key: 'name',
             width: '30%',
+            render: (text, record) => {
+                return (
+                    <NavLink to={`/project/${record._id}/kanban`}>{text}</NavLink>
+                )
+            },
         },
         {
             title: '部门',
