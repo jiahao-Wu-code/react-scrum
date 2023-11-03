@@ -111,10 +111,17 @@ export const dropSlice = createSlice({
 
         setProjectId: (state, actions) => {
             state.projectId = actions.payload
+        },
+
+        updateTask: (state, { payload }) => {
+            console.log(payload)
+            const kanban = state.kanbanState.find(item => item.kanbanKey === payload.kanbanKey);
+            const index = kanban.tasks.findIndex(item => item.id === payload.taskId)
+            kanban.tasks[index] = payload.taskData
         }
     }
 })
-export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask, setKanbanData, setProjectId } = dropSlice.actions
+export const { kanbanOrder, taskSameOrder, taskDiffOrder, addKanban, addTask, setKanbanData, setProjectId, updateTask } = dropSlice.actions
 
 export const kanbanSelector = (state) => {
     return state.drop.kanbanState

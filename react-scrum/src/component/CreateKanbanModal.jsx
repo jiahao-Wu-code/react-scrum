@@ -1,19 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Select, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTaskModal } from '../redux/slice/kanban';
-import { addTask, updateKanbanDataAsync } from '../redux/slice/drop';
+import { addTask, kanbanSelector, updateKanbanDataAsync, updateTask } from '../redux/slice/drop';
 
 export default function CreateKanbanModal() {
     const [form] = Form.useForm();
 
+    const kanbanState = useSelector(kanbanSelector)
     const dispatch = useDispatch()
-    const { show, type, kanbanKey, id: projectId } = useSelector(state => state.kanban.taskModalStatus)
+    const { show, type, kanbanKey, taskId } = useSelector(state => state.kanban.taskModalStatus)
 
     const userList = useSelector(state => state.project.userList)
     const orgList = useSelector(state => state.project.orgList)
     const taskTypeList = useSelector(state => state.project.taskTypeList)
 
+
+
+    useEffect(() => {
+
+        if (type === 'edit' && show) {
+            const kanban = kanbanState.find(item => item.kanbanKey === kanbanKey)
+            const task = kanban.tasks.find(item => item.id === taskId)
+            // 表单回填
+            form.setFieldsValue(task)
+        } else if (type === 'create' && show) {
+            // 清空上一次表单
+            form.resetFields()
+        }
+
+    }, [show])
 
     function renderTaskOptions(arr) {
         return arr.map((item) => {
@@ -37,6 +53,12 @@ export default function CreateKanbanModal() {
                     dispatch(addTask({
                         kanbanKey,
                         task: res
+                    }))
+                }else if(type === 'edit') {
+                    dispatch(updateTask({
+                        kanbanKey,
+                        taskId,
+                        taskData: res
                     }))
                 }
                 dispatch(updateKanbanDataAsync())

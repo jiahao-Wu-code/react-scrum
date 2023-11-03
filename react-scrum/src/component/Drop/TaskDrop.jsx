@@ -1,9 +1,21 @@
 import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { Tag } from 'antd';
+import { useDispatch } from 'react-redux';
+import { setTaskModal } from '../../redux/slice/kanban';
 
 export default function TaskDrop(props) {
+    const dispatch = useDispatch();
+
     const column = props.task;
+    const handleClickEditTask = (kanbanKey, taskId) => {
+        dispatch(setTaskModal({
+            show: true,
+            kanbanKey,
+            taskId,
+            type: 'edit'
+        }))
+    }
     return (
         <Droppable droppableId={column.id} type="task">
             {(provided) => (
@@ -20,6 +32,7 @@ export default function TaskDrop(props) {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
+                                    onClick={() => handleClickEditTask(column.kanbanKey, task.id)}
                                 >
                                     <div className='task-card'>
                                         <div className='task-card-top'>
