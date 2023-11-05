@@ -293,7 +293,7 @@ li {
 
 /* 左侧边栏 */
 .project-side-menu-wrap {
-    width: 200px;
+    min-width: 200px;
     /* background: #ccc; */
     height: 100%;
 }
@@ -322,8 +322,8 @@ li {
     /* display: none; */
     /* display: flex; */
     height: 100%;
-    width: calc(100% - 200px);
-    overflow-x: scroll;
+    width: 100%;
+    /* overflow-x: scroll; */
     box-shadow: rgb(0 0 0 / 10%) -5px 0px 5px -5px;
 }
 

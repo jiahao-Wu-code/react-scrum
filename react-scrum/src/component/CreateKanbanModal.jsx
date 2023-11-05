@@ -54,7 +54,7 @@ export default function CreateKanbanModal() {
                         kanbanKey,
                         task: res
                     }))
-                }else if(type === 'edit') {
+                } else if (type === 'edit') {
                     dispatch(updateTask({
                         kanbanKey,
                         taskId,
@@ -79,9 +79,9 @@ export default function CreateKanbanModal() {
 
     return (
         <Modal
-            title={type === 'edit' ? '编辑任务' : '创建任务'}
+            title={type === 'create' ? '创建任务' : '编辑任务'}
             open={show}
-            okText={type === 'edit' ? '编辑任务' : '创建任务'}
+            okText={type === 'create' ? '创建任务' : '修改'}
             onOk={onOk}
             onCancel={onCancel}
         >
