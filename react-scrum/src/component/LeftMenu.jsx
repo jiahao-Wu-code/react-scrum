@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Menu } from 'antd'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 export default function LeftMenu() {
     const [active, setActive] = useState('');
@@ -9,6 +9,8 @@ export default function LeftMenu() {
     const location = useLocation();
     const pathname = location.pathname;
     const pathnameArr = pathname.split('/');
+
+    const params = useParams()
 
     const items = [{
         label: '看板',
@@ -26,7 +28,8 @@ export default function LeftMenu() {
     const handleClickMenu = (e) => {
         const key = e.key;
         setActive(key);
-        navigate(`/project/1/${key}`)
+        const id = params.id
+        navigate(`/project/${id}/${key}`)
     }
 
     return (
