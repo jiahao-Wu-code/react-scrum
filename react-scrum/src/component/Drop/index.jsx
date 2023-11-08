@@ -77,7 +77,7 @@ export default function DropContainer() {
                             {...provided.droppableProps}
                             className='kanban-drop-wrap'
                         >
-                            {initialData.map((column, index) => (
+                            {initialData?.map((column, index) => (
                                 <Draggable draggableId={column.kanbanKey} index={index} key={column.kanbanKey}>
                                     {(provided) => (
                                         <div

@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import { setEpicModalShow } from '../redux/slice/epic';
 import CreateEpicModal from '../component/CreateEpicModal';
+import EpicList from '../component/EpicList';
 
 export default function Epic() {
 	const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Epic() {
 				<button className='epic-title-button' onClick={handleClickCreateEpic}>创建任务组</button>
 			</div>
 			<CreateEpicModal />
+			<EpicList />
 		</div>
 	)
 }
