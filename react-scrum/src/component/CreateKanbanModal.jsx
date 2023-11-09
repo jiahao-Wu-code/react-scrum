@@ -32,14 +32,14 @@ export default function CreateKanbanModal() {
     }, [show])
 
     function renderTaskOptions(arr) {
-        return arr.map((item) => {
+        return arr?.map((item) => {
             return <Select.Option key={item.type} value={item.type}>{item.name}</Select.Option>
         })
     }
 
 
     function renderUsersOptions(arr) {
-        return arr.map((item) => {
+        return arr?.map((item) => {
             return <Select.Option key={item._id} value={item.username}>{item.username}</Select.Option>
         })
     }

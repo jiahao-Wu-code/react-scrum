@@ -1,14 +1,23 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { List, Button, Modal } from 'antd'
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 
 export default function EpicList() {
 
+    const navigate = useNavigate()
+    const params = useParams()
     const epicList = useSelector(state => state.kanban.currentProject.epic)
     console.log("epicList", epicList)
 
     const handleClickItem = (item) => {
         console.log("firstClickItem", item)
+        navigate({
+            pathname: `/project/${params.id}/kanban`,
+            search: createSearchParams({
+                item
+            }).toString(),
+        })
     }
 
     const DeleteText = () => {
