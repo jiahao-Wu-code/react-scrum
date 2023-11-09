@@ -1,31 +1,69 @@
-import { Button, Input, Select, Space } from 'antd'
+import { Button, Input, Select, Space, Form } from 'antd'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 export default function SearchForm() {
 
+    const [form] = Form.useForm();
 
-    const personOptions = [
-        { label: 'James', value: 'James' },
-        { label: 'Tim', value: 'Tim' },
-        { label: 'Yi-co', value: 'Yi-co' },
-    ]
 
-    const typeOptions = [
-        { label: 'Task', value: 'Task' },
-        { label: 'Bug', value: 'Bug' },
-        { label: 'Test', value: 'Test' },
-    ]
+    const personOptions = useSelector(state => state.project.userList)
+
+    const typeOptions = useSelector(state => state.project.taskTypeList)
+
+    const epicOptions = useSelector(state => state.kanban.currentProject.epic)?.map(item => ({ label: item, value: item }))
+
+    const reset = () => {
+        form.resetFields()
+    }
+
+    const search = (e) => {
+
+    }
 
     return (
-        <div>
-            <div className="search-form-wrap">
-                <Input className='search-form-input' placeholder='任务名' />
-                <Space size={'middle'}>
-                    <Select className='search-form-select' options={personOptions} defaultValue={'Yi-co'} />
-                    <Select className='search-form-select' options={typeOptions} defaultValue={'Task'} />
-                    <Button>清除筛选</Button>
-                </Space>
-            </div>
-        </div>
+        <Form layout="inline" form={form} style={{ marginBottom: '30px' }}>
+            <Form.Item
+                name="name"
+                style={{ width: 200 }}
+            >
+                <Input placeholder={'任务名'} className='search-form-input' />
+            </Form.Item>
+            <Form.Item
+                label="负责人"
+                name="owner"
+                style={{ width: 200 }}
+            >
+                <Select
+                    className='search-wrap-select'
+                    options={personOptions}
+                    fieldNames={{ label: 'username', value: 'username' }}
+                >
+                </Select>
+            </Form.Item>
+            <Form.Item
+                label="任务类型"
+                name="type"
+                style={{ width: 200 }}
+            >
+                <Select
+                    className='search-wrap-select'
+                    options={typeOptions}
+                    fieldNames={{ label: 'name', value: 'type' }}
+                />
+            </Form.Item>
+            <Form.Item
+                label="Epic"
+                name="epic"
+                style={{ width: 200 }}
+            >
+                <Select
+                    className='search-wrap-select'
+                    options={epicOptions}
+                />
+            </Form.Item>
+            <Button onClick={reset} style={{ marginRight: '18px' }}>重置</Button>
+            <Button onClick={search} type="primary">查询</Button>
+        </Form>
     )
 }
