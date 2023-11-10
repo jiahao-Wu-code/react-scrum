@@ -23,7 +23,7 @@ export default function LeftMenu() {
     useEffect(() => {
         setActive(pathnameArr[3])
         // eslint-disable-next-line
-    }, [])
+    }, [pathnameArr[3]])
 
     const handleClickMenu = (e) => {
         const key = e.key;
