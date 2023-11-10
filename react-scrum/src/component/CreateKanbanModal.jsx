@@ -15,6 +15,8 @@ export default function CreateKanbanModal() {
     const orgList = useSelector(state => state.project.orgList)
     const taskTypeList = useSelector(state => state.project.taskTypeList)
 
+    const epicList = useSelector(state => state.kanban.currentProject.epic)
+
 
 
     useEffect(() => {
@@ -41,6 +43,12 @@ export default function CreateKanbanModal() {
     function renderUsersOptions(arr) {
         return arr?.map((item) => {
             return <Select.Option key={item._id} value={item.username}>{item.username}</Select.Option>
+        })
+    }
+
+    function renderEpicOptions(arr) {
+        return arr?.map((item) => {
+            return <Select.Option key={item} value={item}>{item}</Select.Option>
         })
     }
 
@@ -122,9 +130,9 @@ export default function CreateKanbanModal() {
                     label="epic"
                     name="epic"
                 >
-                    <Select
-                        className='search_wrap_select'
-                    />
+                    <Select>
+                        {renderEpicOptions(epicList)}
+                    </Select>
                 </Form.Item>
             </Form>
         </Modal>

@@ -8,14 +8,12 @@ export default function EpicList() {
     const navigate = useNavigate()
     const params = useParams()
     const epicList = useSelector(state => state.kanban.currentProject.epic)
-    console.log("epicList", epicList)
 
-    const handleClickItem = (item) => {
-        console.log("firstClickItem", item)
+    const handleClickItem = (epic) => {
         navigate({
             pathname: `/project/${params.id}/kanban`,
             search: createSearchParams({
-                item
+                epic
             }).toString(),
         })
     }

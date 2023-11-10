@@ -1,10 +1,29 @@
 import { Button, Input, Select, Space, Form } from 'antd'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams, useSearchParams } from 'react-router-dom';
+import { getProjectById } from '../../api/project';
+import { setKanbanData } from '../../redux/slice/drop';
 
 export default function SearchForm() {
 
     const [form] = Form.useForm();
+    const params = useParams()
+    const projectId = params.id;
+    const [searchParams] = useSearchParams()
+    const searchEpic = searchParams.get('epic')
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (searchEpic) {
+            form.setFieldValue('epic', searchEpic)
+            setTimeout(() => {
+                searchData({
+                    epic: searchEpic
+                })
+            }, 500);
+        }
+    }, [])
 
 
     const personOptions = useSelector(state => state.project.userList)
@@ -15,10 +34,55 @@ export default function SearchForm() {
 
     const reset = () => {
         form.resetFields()
+        searchData()
+    }
+
+    // 搜索数据筛选
+    const searchData = async (formData) => {
+        const res = await getProjectById(projectId)
+        const kanbanData = res.data.kanban
+        const newKanbanData = kanbanData.map(item => {
+            item.tasks = item.tasks.filter(task => {
+                let isOwner = true,
+                    isType = true,
+                    isEpic = true,
+                    isName = true
+                if (formData?.name) {
+                    if (task.name.indexOf(formData?.name) < 0) {
+                        isName = false
+                    }
+                }
+                if (formData?.owner) {
+                    if (task.owner !== formData?.owner) {
+                        isOwner = false
+                    }
+                }
+                if (formData?.type) {
+                    if (task.type !== formData?.type) {
+                        isType = false
+                    }
+                }
+
+                if (formData?.epic) {
+                    if (task.epic !== formData?.epic) {
+                        isEpic = false
+                    }
+                }
+                return isOwner && isType && isEpic && isName
+            })
+            return {
+                ...item,
+                tasks: item.tasks
+            }
+        })
+        console.log("72>>>", newKanbanData)
+        dispatch(setKanbanData(newKanbanData))
     }
 
     const search = (e) => {
-
+        form.validateFields().then((res) => {
+            searchData(res)
+        })
     }
 
     return (
