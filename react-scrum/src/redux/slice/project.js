@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getProject, getProjectById } from "../../api/project";
+import { getProject, getProjectById, getProjectByQuery } from "../../api/project";
 import { setKanbanData, setProjectId } from "./drop";
 import { setCurrentProject } from "./kanban";
 import { getOrgList, getTaskTypeList, getUserList } from "../../api/user";
@@ -33,6 +33,16 @@ export const getTaskTypeListAsync = createAsyncThunk(
     async () => {
         const res = await getTaskTypeList();
         return res.data
+    }
+)
+
+
+export const getProjectByQueryAsync = createAsyncThunk(
+    'project/getProjectByQueryAsync',
+    async (_, thunkApi) => {
+        console.log("43>>>>>", _, thunkApi)
+        const res = await getProjectByQuery()
+        console.log("getProjectByQuery", res)
     }
 )
 

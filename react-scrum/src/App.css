@@ -288,7 +288,7 @@ li {
 .layout-wrap-project {
     display: flex;
     height: 100%;
-    border-right: 1px solid #f0f0f0;
+    /* border-right: 1px solid #f0f0f0; */
 }
 
 /* 左侧边栏 */
