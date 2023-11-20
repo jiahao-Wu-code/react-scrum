@@ -39,9 +39,8 @@ export const getTaskTypeListAsync = createAsyncThunk(
 
 export const getProjectByQueryAsync = createAsyncThunk(
     'project/getProjectByQueryAsync',
-    async (_, thunkApi) => {
-        console.log("43>>>>>", _, thunkApi)
-        const res = await getProjectByQuery()
+    async (state, thunkApi) => {
+        const res = await getProjectByQuery(state)
         console.log("getProjectByQuery", res)
     }
 )

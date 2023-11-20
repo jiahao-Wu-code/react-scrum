@@ -13,8 +13,14 @@ export default function ProjectSearch() {
 
     const dispatch = useDispatch()
 
-    const reset = () => { }
-    const searchClick = () => { }
+    const reset = () => {
+        form.resetFields()
+    }
+    const searchClick = () => {
+        form.validateFields().then(res => {
+            dispatch(getProjectByQueryAsync(res))
+        })
+    }
 
     useEffect(() => {
         dispatch(getProjectByQueryAsync({ page: 1 }))
