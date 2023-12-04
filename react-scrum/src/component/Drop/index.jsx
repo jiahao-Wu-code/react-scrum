@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { kanbanOrder, kanbanSelector, taskSameOrder, taskDiffOrder, updateKanbanDataAsync, addKanban } from '../../redux/slice/drop'
 import { setTaskModal } from '../../redux/slice/kanban';
 
-export default function DropContainer() {
+function DropWarp() {
     const [inputValue, setInputValue] = useState('')
     const initialData = useSelector(kanbanSelector)
     const dispatch = useDispatch()
@@ -106,3 +106,10 @@ export default function DropContainer() {
         </DragDropContext>
     )
 }
+
+/**
+ * 性能优化
+ * React.memo  对于父组件状态变化导致的 render ，子组件也render，通常 useMemo 与 useCallback 会一起配合使用。
+ */
+const DropContainer = React.memo(DropWarp)
+export default DropContainer
